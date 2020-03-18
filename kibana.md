@@ -72,7 +72,7 @@ output {
 
 
 
-
+![1583805775072](/home/lovefei/Documents/AxiaoA/images/1583805775072.png)
 
 
 
@@ -89,6 +89,104 @@ log_format main '{ "time_local":"$time_local",
 ```
 
 ![1583765278409](/tmp/1583765363364.png)
+
+
+
+```shell
+#vim 编辑器中进行复制粘贴
+:2,7t8  #把从2~7行复制到8行
+:2,7m8  #吧2~7行移动到8行
+
+
+```
+
+### 收集tomcat日志
+
+```shell
+#yum 安装tomcat
+yum install tomcat  tomcat-webapps tomcat-admin-webapps tomcat-docs-webapp tomcat-javadoc -y
+
+
+
+
+```
+
+##### 1. tomcat日志转换成json格式
+
+修改: ~/tomat/server.xml  文件.
+
+删除139行  ` pattern="%h %l %u %t ....."`
+
+替换为如下
+
+![1583806742638](/home/lovefei/Documents/AxiaoA/images/1583806742638.png)
+
+#### 2. 收集java的错误日志
+
+​	根据时间节点来计算日志 [2020-03-10 12:20] 到下一个[2020-03-10 12:21] 作为分界
+
+```shell
+＃这里写的是ｉｎｐｕｔ日志
+- type:log
+  enabled: true
+  paths:
+    - /var/your/log/file/path/file.log
+   tags: ["tag your use name"]
+   multiline.pattern: '^\['　　＃用［作为标记
+   multiline.negate: true
+   multiline.match: after     #从开始到下一个开头
+```
+
+#### 3. docker 日志收集
+
+```shell
+#写到input模块中
+filebeat.input:
+- type: docker
+  containers.ids:
+    - '容器ID,要写全'
+output.elasticsearch:   #表明是谁来收集日志
+  hosts: ["es地址"]
+   indices:
+  - index: "waring-%{[beat.version]}-%{+yyy.MM}"
+     when.contains:
+       stream: "access"
+   - index: "error-%{[beat.version]}-%{+yyy.MM}"
+      when.containers:
+        stream: "error"
+setup.template.name: "docker"
+setup.template.pattern: "docker-*"
+setup.template.enabled: false
+setup.template.overwrite: true
+    
+```
+
+#### docker-compose  容器编排工具
+
+
+
+#### 分开收集nginx的access日志和err日志
+
+![1583997387128](/home/lovefei/Documents/AxiaoA/images/1583997387128.png)
+
+
+
+#### filebeat 自带的modules收集日志
+
+1. nginx
+2. mongo
+3. redis
+4. mysql
+
+
+
+## kibana画图
+
+#### 使用redis作为缓存
+
+#### 使用kafka作为缓存
+
+
 
 
 
