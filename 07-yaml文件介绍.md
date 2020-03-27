@@ -418,19 +418,228 @@ ___如果用kubectl edit configmap configmapname 修改的话,那么pod里面的
 
 #### Downward 用来获取pod的基本信息
 
+通过Download API来讲POD的IP, 名称以及所对应的namespace注入到容器的环境变量中去,然后在容器中打印全部环境变量来进行验证
+
 常用关联字段
 
 ![1585145653465](/home/lovefei/Documents/AxiaoA/images/1585145653465.png)
 
-ServiceAccount
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-env-pod
+  namespace: default
+spec:
+  containers:
+  - name: test-env-pod
+    image: nginx
+    command: ["/bin/sh","-C","env"]
+    env:
+    - name: POD_HOME
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.name
+    - name: POD_NAMESPACE
+      valueFrom:
+        filedRef:
+          filedPath: metadata.namespace
+```
 
-用来设置权限的.
+vim 编辑小技巧:   set list  #可以显示每行末尾的空格或者换行.
 
 
 
 
 
+#### ServiceAccount  (投射数据卷第四种)
+
+​     当用户访问集群(例如使用kubectl命令)时, apiservice会将用户认证为一个特定的user account (目前通常是admin, 除非系统管理员自定义集群配置)
+
+​     pod容器中的进程也可以与apiserver联系.当他们在联系apiserver的时候,他们会被认证为一个滕丁的ServiceAccount(;比如default)
+
+
+
+不是用于管理k8s账户的,而是给pod里面的进程使用的.
+
+
+
+##### 应用场景
+
+service account 它并非不是给k8s集群的用户使用的,而是给pod里面的进程使用的,它为pod提供必要的身份认证.
+
+
+
+___查看pod内部的一些目录___
+
+kubectl  exec nginx ls /usr/secrets/kubernetes.io/serviceaccount       #这个目录是serviceaccent的认证存放的地方.
+
+创建一个ServiceAccount
+
+```shell
+kubectl create serviceaccount mysa  (你要创建的serviceaccount的名字)
+#查看创建的sa
+kubectl describe sa saname
+kubectl get secret
+```
+
+调用自己创建的sa
+
+```yaml
+apiVersion: v1
+kind: pod
+metadata:
+  name: nginx-pod
+  labels:
+    app: my-pod
+spec:
+  containers:
+  - name: my-pod
+    image: nginx
+    ports:
+    - name: http
+      containerPort: 80
+  serviceAccountName: mysa   #写清自己要挂载的sa的名字
+```
+
+#### rbac  权限控制
+
+在k8s中,授权有ABAC(基于属性的访问控制), RBAC(基于角色的访问控制), webhock , Node , AlwaysDeny(一直拒绝)  , 和AlwaysAllow(一直允许)六种.
+
+在RBAC API中,通过如下授权
+
+* 定义角色: 在定义角色时会指定次角色对于资源的访问控制规则
+* 绑定角色: 讲主体与角色进行绑定,对用户进行访问授权
+
+#### 创建k8s账号与rbac使用
+
+默认使用的账号是service account  ,role(定义权限),   cluster-role  (集群角色,对整个k8s集群的命名空间生效
+
+rolebinding (绑定角色)
+
+clusterRoleBinding (集群访美的权限授予通过ClusterRoleBinding对象完成)  集群角色的绑定
+
+![1585291247198](/home/lovefei/Documents/AxiaoA/images/1585291247198.png)
+
+创建账号:
+
+1. 创建私钥
+
+   (umask 077; openssl genrsa -out wing.key 2048)
+
+   用此私钥创建一个csr(证书签名请求)文件
+
+   openssl req -new -key wing.key  -out wing.csr  -subj  "/CN=wing"
+
+   openssl x509 -req -in wing.csr -CA  /etc/kubernetes/pki/ca.crt -CAkey /etc/kubernetes/pki/ca.key  -CAcreateserial -out wing.crt  -days 365    #需要调用k8s的证书,然后生成wing.crt证书.
+
+2.  查看证书内容
+
+   openssl  x509 -in wing.crt  -text -noout
+
+   kubectl  config set-credentials wing  --client-certificate=./wing.crt  --client-key=./wing.key --embed-certs=true
+
+3. 设置上线文
+
+   kubectl config  set-context wing@kubernetes  --cluster=kubernetes  --user=wing
+
+4. 查看当前工作的上下文
+
+   kubectl  config view
+
+5. 切换用户
+
+   kubectl config use-context  wing@kubernetes
+
+创建一个角色(role)
+
+切回管理账号先
+
+kubectl  config  use-context  kubernetes-admin@kubernetes
+
+创建一个角色
+
+kubectl create role  role-name(随便起)  --verb=get ,list ,watch (设置该role拥有的权限)  --resource=pod,svc(对pod和svc的权限)
+
+绑定一个角色
+
+kubectl create role myrole(name)  myrole-binding  --role=myrole  --user=wing
+
+
+
+__切换用户__
+
+kubectl config use-context  wing@kubernetes
 
 
 
 
+
+#### 探针
+
+```yaml
+#命令行探针
+...
+spec:
+  containers:
+  - name: liveness
+    image: nginx
+    args:
+    - /bin/sh
+    - -C
+    - touch /tmp/healthy; sleep 30; rm -rf /tmp/healthy; sleep 600
+    livenessProbe:  #下面是探针的设置方法
+      exec:   #健康检查的类型是exec,(执行命令)
+        command:
+        - cat
+        - /tmp/healthy
+        initialDelaySeconds: 5 #启动五秒后开始执行
+        periodSeconds: 5   #每5秒执行一次
+```
+
+http状态探针
+
+```yaml
+...
+spec:
+  containers:
+  - name: liveness-exec-container
+    image: nginx
+    imagePullPolicy: IfNotPresent
+    ports:
+      - name: http
+        containerPort: 80
+    livenessProbe:
+      httpGet:
+        port: http
+        path: /index.html
+      initialDelaySeconds: 1
+      periodSeconds: 3
+```
+
+#### Pod Preset
+
+![1585296899784](/home/lovefei/Documents/AxiaoA/images/1585296899784.png)
+
+编写一个podPreset
+
+```yaml
+apiVersion: v1
+kind: PodPreset
+metadata:
+  name: allow-database
+spec:
+  selector:
+    matchLabels:
+  env:
+    - name: DB_PORT
+      value: "6379"
+  volumeMounts:
+    - mountPath: /cache
+      name: cache-volume
+  volume: 
+    - name: cache-colume
+    emptyDir: {}
+```
+
+![1585297671609](/home/lovefei/Documents/AxiaoA/images/1585297671609.png)
