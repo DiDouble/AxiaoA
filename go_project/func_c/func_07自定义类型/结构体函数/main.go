@@ -29,12 +29,25 @@ func newdog(name string, age int) dog {
 	}
 }
 func (d dog) wang() {
-	fmt.Printf("%s :wangwangwang ,%v", d.name ,d.age )
+	fmt.Printf("%s :wangwangwang ,%v \n", d.name, d.age)
+}
+
+func (p persion) guonian() {
+	p.age++
+}
+
+func (p *persion) zhenguonian() {
+	p.age++
 }
 func main() {
 	// p1 := newPersion("112", 11)
 	// fmt.Println(p1)
 	d1 := newdog("zhizhi", 11)
 	d1.wang()
+	p1 := newPersion("weilai", 18)
+	p1.guonian()
+	fmt.Println("\n", p1.age)
+	p1.zhenguonian()
+	fmt.Println("\n", p1.age)
 
 }
