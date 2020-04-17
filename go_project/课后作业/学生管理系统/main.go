@@ -1,26 +1,34 @@
-
 package main
 
 import (
 	"fmt"
+	"os"
 )
 
-func main()  {
+func showAllStudent() {
+
+}
+func addStudent() {
+
+}
+func deleteStudent() {
+
+}
+
+func main() {
 	//打印菜单
 	fmt.Println("欢迎光临学生管理系统")
-	fmt.Println(
-		`
+	fmt.Println(`
 		1. 查看所有学生
 		2. 新增学生
 		3. 删除学生
 		4. 退出
-		`
-	)
+		`)
 	fmt.Print("请输入你要干啥:")
 	//等待用户做选择
 	var choice int
 	fmt.Scanln(&choice)
-	fmt.Printf("你选择的选项是!\n",choice)
+	fmt.Printf("你选择的选项是!\n", &choice)
 
 	//3. 执行对应的函数
 	switch choice {
@@ -36,6 +44,5 @@ func main()  {
 		fmt.Println("滚~~")
 
 	}
-	
-}
 
+}
