@@ -146,7 +146,7 @@ find /etc  -name "host*" -print
 echo "linuxpasswd"  | passwd --stdin root
 ```
 
-![1585961150629](/home/lovefei/Documents/AxiaoA/images/1585961150629.png)
+![avatar](images/1585961150629.png)
 
 ![1585961206268](/home/lovefei/Documents/AxiaoA/images/1585961206268.png)
 
@@ -160,7 +160,7 @@ echo "file is alread"
 fi
 ```
 
-![1585961495634](/home/lovefei/Documents/AxiaoA/images/1585961495634.png)
+![avatar](images/1585961495634.png)
 
 for循环
 
@@ -244,6 +244,11 @@ userdel
 ```shell
 -f  强制删除用户
 -r  同时删除用户的家目录
+```
+
+```shell
+##资源
+https://www.bilibili.com/video/BV1a4411B7V9?p=5
 ```
 
 
