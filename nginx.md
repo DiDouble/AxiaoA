@@ -138,6 +138,62 @@ server {
 }
 ```
 
+### GoAccess实时分析nginx站点
+
+
+
+```shell
+goaccess accesssLogPath -o /new/html/paht.html  --real-time-html  --time-format='%H:%M:%S'    --date-format="%d/%b/%y"  --log-format=COMBINED
+```
+
+![avatar](images/1587253200906.png)
+
+![1587253300536](/home/lovefei/goproject/GoEnv/src/AxiaoA/images/1587253300536.png)
+
+![1587253364244](/home/lovefei/goproject/GoEnv/src/AxiaoA/1587253364244.png)
+
+![1587253430751](/home/lovefei/goproject/GoEnv/src/AxiaoA/images/1587253430751.png)
+
+
+
+#### 自生成秘钥
+
+```yaml
+# yum install python2-certbot-nginx
+# certbot --nginx --nginx-server-root=/usr/local/openresty/nginx/conf/ -d geektime.taohui.hub
+
+```
+
+### openresty
+
+![1587254359442](/home/lovefei/goproject/GoEnv/src/AxiaoA/images/1587254359442.png)
+
+生产中nginx采用多进程模型
+
+> 就是一个master进程和多个worker进程,worker进程的个数跟cpu的核数是一致的.
+>
+> 如果采用多线程的话,由于多个线程使用的是同一个地址空间,所以当其中一个线程出现问题的时候,就会引起nginx的整个应用挂掉,由于nginx需要保证高可用和高可靠性.
+
+![1587254998672](/home/lovefei/goproject/GoEnv/src/AxiaoA/images/1587254998672.png)
+
+
+
+![1587255167610](/home/lovefei/goproject/GoEnv/src/AxiaoA/images/1587255167610.png)
+
+
+
+![1587255213769](/home/lovefei/goproject/GoEnv/src/AxiaoA/images/1587255213769.png)
+
+![1587255295301](/home/lovefei/goproject/GoEnv/src/AxiaoA/images/1587255295301.png)
+
+* 由于替换过程中,现在的nginx正在使用,所以拷贝的时候需要添加`-f`表示强制替换.
+
+
+
+
+
+
+
 
 
 
