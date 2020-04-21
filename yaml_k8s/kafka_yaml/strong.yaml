@@ -14,7 +14,7 @@ parameters:
     imageFeatures: layering
     # Ceph 管理员认证信息，这些都是在 clusterID 命名空间下面自动生成的
     csi.storage.k8s.io/provisioner-secret-name: rook-csi-rbd-provisioner
-    csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph
+    # csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph
     csi.storage.k8s.io/node-stage-secret-name: rook-csi-rbd-node
     csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
     # 指定 volume 的文件系统格式，如果不指定, csi-provisioner 会默认设置为 `ext4`
