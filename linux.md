@@ -247,6 +247,6 @@ userdel
 ```
 
 ```shell
-##资源
+## 资源
 https://www.bilibili.com/video/BV1a4411B7V9?p=5
 ```

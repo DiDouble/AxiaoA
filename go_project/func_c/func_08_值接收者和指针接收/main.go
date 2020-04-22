@@ -12,7 +12,7 @@ type people struct {
 //方法一：
 var p persion  //声明一个person类型的变量p
 p.name = "11"
-p.age = "18"
+p.age = 18
 fmt.Println(p)
 //方法二
 persion {

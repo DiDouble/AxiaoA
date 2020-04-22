@@ -16,14 +16,14 @@ func (c cat) speak() {
 	fmt.Println("miaomiaomiao")
 }
 func (d dog) speak() {
-	fmt.Println("miaomiaomiao")
+	fmt.Println("wangwangwang")
 }
 func (p persion) speak() {
-	fmt.Println("miaomiaomiao")
+	fmt.Println("hahahahha")
 }
 
 func da(x speaker) {
-	x.speaker()
+	x.speak()
 }
 
 func main() {
