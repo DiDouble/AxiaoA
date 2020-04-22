@@ -148,7 +148,7 @@ echo "linuxpasswd"  | passwd --stdin root
 
 ![avatar](images/1585961150629.png)
 
-![1585961206268](/home/lovefei/Documents/AxiaoA/images/1585961206268.png)
+![avatar](images/1585961206268.png)
 
 ```shell
 DIR="/tmp/laoyuan"
@@ -164,15 +164,15 @@ fi
 
 for循环
 
-![1585961550176](/home/lovefei/Documents/AxiaoA/images/image-20200319164645626.png)
+![avatar](images/image-20200319164645626.png)
 
 while循环
 
-![1585961657513](/home/lovefei/Documents/AxiaoA/images/1585961657513.png)
+![avatar](images/1585961657513.png)
 
 case
 
-![1585961697625](/home/lovefei/Documents/AxiaoA/1585961697625.png)
+![avatar](1585961697625.png)
 
 at  执行一次性计划
 
@@ -250,12 +250,3 @@ userdel
 ##资源
 https://www.bilibili.com/video/BV1a4411B7V9?p=5
 ```
-
-
-
-
-
-
-
-
-
