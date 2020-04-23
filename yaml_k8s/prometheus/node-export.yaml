@@ -8,7 +8,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: node-exporter
+      k8s-app: node-exporter
   template:
     metadata:
       labels:
