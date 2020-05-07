@@ -231,9 +231,9 @@ sleep 1
 systemctl restart ntpd
 sleep 1
 /usr/bin/cp -f ${cwd}/${system_version}/bashrc /etc/
-/usr/bin/cp -f ${cwd}/${system_version}/motd /etc/
+#/usr/bin/cp -f ${cwd}/${system_version}/motd /etc/
 /usr/bin/cp -f ${cwd}/${system_version}/.bash_profile /root/
-/usr/bin/cp -f ${cwd}/${system_version}/my.cnf /etc/
+# /usr/bin/cp -f ${cwd}/${system_version}/my.cnf /etc/
 }
 
 all_judge_system_version_function () {

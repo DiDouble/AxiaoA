@@ -21,8 +21,8 @@ echo "
     - Memory free (cache)               = `free -m | head -n 3 | tail -n 1 | awk {'print $3'}` Mb
     - Swap in use                       = `free -m | tail -n 1 | awk {'print $3'}` Mb
     - System Uptime                     =`uptime`"
-for i in `df -P | awk '{print $6}' | grep -v "Mounted"`
-    do
-    echo "    - Disk Space Used                   = `df -P $i | awk '{ a = $5 } END {print a}'` ("$i")"
-done
+# for i in `df -P | awk '{print $6}' | grep -v "Mounted"`
+#     do
+#     echo "    - Disk Space Used                   = `df -P $i | awk '{ a = $5 } END {print a}'` ("$i")"
+# done
 
