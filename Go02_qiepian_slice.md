@@ -133,9 +133,9 @@ s1 = [1 2 3 4 5 100]
 //一次追加多个
 ```
 
-![1585730780296](/home/lovefei/Documents/AxiaoA/images/1585730780296.png)
+![avatar](images/1585730780296.png)
 
-___这问题就是当你赋值的元素超过了数组的容量的时候,会提示index out of range __
+__这问题就是当你赋值的元素超过了数组的容量的时候,会提示index out of range __
 
 copy
 
