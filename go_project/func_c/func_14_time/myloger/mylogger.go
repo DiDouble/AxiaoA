@@ -8,9 +8,11 @@ import (
 	"strings"
 )
 
+
+// 重命名uint16型
 type LogLevel uint16
 
-const (
+const (  //定义一个不变函数
 	//定义日志级别
 	UNKOWN LogLevel = iota
 	DEBUG
@@ -20,12 +22,12 @@ const (
 	ERROR
 	FATAL
 )
-
+// 通过parseLogLevel方法将传进来的字符串转换成LogLevel返回去
 func parseLogLevel(s string) (LogLevel, error) {
 	s = strings.ToLower(s) //将传过来的string类型的字符串转换为小写
 	switch s {
 	case "debug":
-		return DEBUG, nil
+		return DEBUG, nil //如果没有错,错误返回nil
 	case "trace":
 		return TRACE, nil
 	case "info":
@@ -35,7 +37,7 @@ func parseLogLevel(s string) (LogLevel, error) {
 	case "error":
 		return ERROR, nil
 	case "fatal":
-		return FATAL, nil
+		return FATAL, nil 
 	default:
 		// fmt.Println("s")
 		err := errors.New("新的日志级别")
@@ -43,7 +45,7 @@ func parseLogLevel(s string) (LogLevel, error) {
 
 	}
 }
-
+//将传入的LogLevel型的参数以字符串的形式输出。
 func getLogString(lv LogLevel) string {
 	switch lv {
 	case DEBUG:
